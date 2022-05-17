@@ -1,2 +1,2 @@
-# word-embedding-experiment
+# Embedding experiment
 Experiments with word embedding
