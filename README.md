@@ -20,7 +20,7 @@ newly created line as a new axis by projecting the rest of the points onto this 
 
  
 
-<img src = "examples/plot_3.png"</a>
+<img src = "examples/plot_3.png"></a>
 <center> <i>Drawn using: <a>https://www.geogebra.org/m/JMMKv7cx<a></i>
 
 ## Usage
