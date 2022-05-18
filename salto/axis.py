@@ -23,7 +23,12 @@ class axis:
         The midpoint between negative pole and positive pole points
     transform: numpy.array
         A matrix to shift the space to place the midpoint in the origin
-     
+    shifted_negative_pole: numpy.array
+        The negative pole shifted with the affine transfromation defined in the self.transform matrix
+    shifted_positive_pole: numpy.array
+        The positive pole shifted with the affine transfromation defined in the self.transform matrix
+    direction: numpy.array
+        A unit vector which indicates the line passing through the shifted negative pole and shifted positive pole
      
     Examples
     --------
@@ -59,16 +64,16 @@ class axis:
         self.dims = len(negative_pole)
         
         # Original values
-        self.A = negative_pole 
-        self.B = positive_pole
+        self.negative_pole = negative_pole 
+        self.positive_pole = positive_pole
         self.M = _midpoint(negative_pole, positive_pole)  
         
         # Transformation
         self.transform = _transformation_matrix(self.dims, self.M)       
-        self.shifted_A = self.shift(negative_pole)
-        self.shifted_B = self.shift(positive_pole)
+        self.shifted_negative_pole = self.shift(negative_pole)
+        self.shifted_positive_pole = self.shift(positive_pole)
         
-        self.direction = self.shifted_B / np.linalg.norm(self.shifted_B)
+        self.direction = self.shifted_positive_pole / np.linalg.norm(self.shifted_positive_pole)
         # shifted_M is (0, 0, ...) 
 
     def __call__(self, V: npt.NDArray):
@@ -80,9 +85,9 @@ class axis:
         
         proj_V = self._project(V)
         dist = np.linalg.norm(proj_V)
-        dist_to_shifted_A = np.linalg.norm(proj_V - self.shifted_A)
-        dist_to_shifted_B = np.linalg.norm(proj_V - self.shifted_B)
-        sign = 1 if dist_to_shifted_A < dist_to_shifted_B else -1
+        dist_to_shifted_neg_pole = np.linalg.norm(proj_V - self.shifted_negative_pole)
+        dist_to_shifted_pos_pole = np.linalg.norm(proj_V - self.shifted_positive_pole)
+        sign = 1 if dist_to_shifted_neg_pole < dist_to_shifted_pos_pole else -1
         value = sign * dist
         return value
     
