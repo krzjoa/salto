@@ -22,6 +22,9 @@ newly created line as a new axis by projecting the rest of the points onto this 
 
 <img src = "examples/plot_3.png"></a>
 <center> <i>Drawn using: <a>https://www.geogebra.org/m/JMMKv7cx<a></i>
+ 
+I named the package **salto**, whcih means *somersault* in many languages or simply "jump" in romance languages like Italian, where this word originally comes from.
+It's because the operation of changing space for me resembles a kind of acrobatics 😉.
 
 ## Usage
 
