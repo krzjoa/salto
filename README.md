@@ -53,6 +53,6 @@ axis.plot(
     {values: cold_values, labels: cold, color: 'blue'},
     {values: warm_values, labels: warm, color: 'red'},
     poles = {negative: {label: 'ice', color = 'blue'}, 
-             positive: {label: 'ice', color = 'red'}}
+             positive: {label: 'fire', color = 'red'}}
 )
 ```
