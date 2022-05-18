@@ -49,7 +49,7 @@ warm_vecs = [nlp(w).vector for w in warm]
 cold_values = [ice_fire_axis(p) for p in cold_vecs]
 warm_values = [ice_fire_axis(p) for p in warm_vecs]
 
-axis.plot(
+ice_fire_axis.plot(
     {values: cold_values, labels: cold, color: 'blue'},
     {values: warm_values, labels: warm, color: 'red'},
     poles = {negative: {label: 'ice', color = 'blue'}, 
