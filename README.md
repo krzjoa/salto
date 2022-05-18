@@ -1,6 +1,6 @@
 # salto
 
-> Explore meaning of the embeddings
+> Playing with embedding vectors
 
 
 ## Installation
