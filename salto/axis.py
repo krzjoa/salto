@@ -19,15 +19,15 @@ class axis:
     ----------
     dims: int
         The expected number of dimensions    
-    M: numpy.array
-        The midpoint between negative pole and positive pole points
+    midpoint: numpy.array
+        The midpoint between the negative and positive pole
     transform: numpy.array
         A matrix to shift the space to place the midpoint in the origin
     shifted_negative_pole: numpy.array
         The negative pole shifted with the affine transfromation defined in the self.transform matrix
     shifted_positive_pole: numpy.array
         The positive pole shifted with the affine transfromation defined in the self.transform matrix
-    direction: numpy.array
+    unit_vector: numpy.array
         A unit vector which indicates the line passing through the shifted negative pole and shifted positive pole
      
     Examples
@@ -66,45 +66,41 @@ class axis:
         # Original values
         self.negative_pole = negative_pole 
         self.positive_pole = positive_pole
-        self.M = _midpoint(negative_pole, positive_pole)  
+        self.midpoint = _midpoint(negative_pole, positive_pole)  
         
         # Transformation
-        self.transform = _transformation_matrix(self.dims, self.M)       
-        self.shifted_negative_pole = self.shift(negative_pole)
-        self.shifted_positive_pole = self.shift(positive_pole)
+        self.transform = _transformation_matrix(self.dims, self.midpoint)       
+        self.shifted_negative_pole = self._shift(negative_pole)
+        self.shifted_positive_pole = self._shift(positive_pole)
         
-        self.direction = self.shifted_positive_pole / np.linalg.norm(self.shifted_positive_pole)
-        # shifted_M is (0, 0, ...) 
+        self.unit_vector = self.shifted_positive_pole / np.linalg.norm(self.shifted_positive_pole)      # shifted_midpoint is (0, 0, ...) 
 
-    def __call__(self, V: npt.NDArray):
+    def __call__(self, vector: npt.NDArray):
         
-        if (len(V) != self.dims):
+        if (len(vector) != self.dims):
             raise ValueError(
-                f'Vector's lenth is {len(V)}, but it should equal {self.dims}' 
+                f'Vector length is {len(vector)}, but it should equal {self.dims}' 
             )
         
-        proj_V = self._shift_and_project(V)
-        dist = np.linalg.norm(proj_V)
-        dist_to_shifted_neg_pole = np.linalg.norm(proj_V - self.shifted_negative_pole)
-        dist_to_shifted_pos_pole = np.linalg.norm(proj_V - self.shifted_positive_pole)
-        sign = 1 if dist_to_shifted_neg_pole < dist_to_shifted_pos_pole else -1
-        value = sign * dist
-        return value
+        shifted_vector = self._shift(vector)
+        return (self.unit_vector.T @ shifted_vector)[0, 0]
     
     def plot(*args, title = "Embedding vectors", figsize = (10, 5), 
-             poles = {negative: {label: 'Negative pole', color = 'blue'}, 
-                      positive: {label: 'Positive pole', color = 'red'}}):
+             poles = {'negative': {'label': 'Negative pole', 'color': 'blue'}, 
+                      'positive': {'label': 'Positive pole', 'color':'red'}}):
         '''
         
         Plot the groups of vectors on the on the axis (in the one-dimensional space)
         
         Examples
         --------
-        axis.plot(
+        ice_fire_axis = salto.axis(ice.vector, fire.vector)
+        
+        ice_fire_axis.plot(
                 {values: cold_values, labels: cold, color: 'tab:blue'},
                 {values: warm_values, labels: warm, color: 'tab:red'},
-                poles = {negative: {label: 'ice', color = 'blue'}, 
-                         positive: {label: 'ice', color = 'red'}}
+                poles = {negative: {label: 'ice', color: 'blue'}, 
+                         positive: {label: 'ice', color: 'red'}}
             )
    
         ''' 
@@ -137,11 +133,11 @@ class axis:
         pos_value = self(self.positive_pole)
 
         ax.vlines(neg_value, 0, 4, neg_pole['color'])  
-        ax.annotate(neg_pole['label'], xy=(, 4), xytext=(4, np.sign(4)*3),
+        ax.annotate(neg_pole['label'], xy=(neg_value, 4), xytext=(4, np.sign(4)*3),
             textcoords="offset points", va=va, ha="right", weight='bold')
 
         ax.vlines(pos_value, 0, 4, color=pos_pole['color'])  
-        ax.annotate(pos_pole['label'], xy=(ice_value, 4), xytext=(4, np.sign(4)*3),
+        ax.annotate(pos_pole['label'], xy=(pos_value, 4), xytext=(4, np.sign(4)*3),
             textcoords="offset points", va=va, ha="right", weight='bold')
         
         # Show the plot
@@ -150,22 +146,18 @@ class axis:
         ax.margins(y=0.1)
         plt.show()
 
-    def _shift(self, V: npt.NDArray):
-        extended_V = _extend_with_one(V)
-        return (self.transform @ extended_V)[0:self.dims]
+    def _shift(self, vector: npt.NDArray):
+        extended_vector = _extend_with_one(vector)
+        return (self.transform @ extended_vector)[0:self.dims]
     
-    def _shift_and_project(self, V: npt.NDArray):
-        shifted_V = self.shift(V)
-        return (shifted_V.T @ self.direction) / (self.direction.T @ self.direction) * self.direction
-    
-       
-def _extend_with_one(V: npt.NDArray) -> npt.NDArray:
-    V = V[np.newaxis].T
-    return np.vstack([V, [1]])      
+        
+def _extend_with_one(vector: npt.NDArray) -> npt.NDArray:
+    vector = vector[np.newaxis].T
+    return np.vstack([vector, [1]])      
 
-def _transformation_matrix(dims: int, M: npt.NDArray) -> npt.NDArray:
+def _transformation_matrix(dims: int, midpoint: npt.NDArray) -> npt.NDArray:
     mat = np.eye(dims + 1)
-    mat[0:dims, -1] = -M
+    mat[0:dims, -1] = -midpoint
     return mat   
     
 def _midpoint(x: npt.NDArray, y: npt.NDArray) -> npt.NDArray:
