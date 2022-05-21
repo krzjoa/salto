@@ -30,34 +30,33 @@ class axis:
     unit_vector: numpy.array
         A unit vector which indicates the line passing through the shifted negative pole and shifted positive pole
      
+        
     Examples
     --------
-    import numpy as np
-    import spacy
-    import salto
-
-    nlp = spacy.load('en_core_web_md')
-
-    fire = nlp('fire')
-    ice = nlp('ice')
-
-    ice_fire_axis = salto.axis(ice.vector, fire.vector)
-
-    cold = ['ice cream', 'polar', 'snow', 'winter', 'fridge', 'Antarctica']
-    warm = ['boiling water', 'tropical', 'sun', 'summer', 'oven', 'Africa']
-
-    cold_vecs = [nlp(w).vector for w in cold]
-    warm_vecs = [nlp(w).vector for w in warm]
-
-    cold_values = [ice_fire_axis(p) for p in cold_vecs]
-    warm_values = [ice_fire_axis(p) for p in warm_vecs]
-
-    axis.plot(
-        {values: cold_values, labels: cold, color: 'blue'},
-        {values: warm_values, labels: warm, color: 'red'},
-        show_poles = True
-    )
-        
+    >>> import numpy as np
+    >>> import spacy
+    >>> import salto
+    >>>
+    >>> nlp = spacy.load('en_core_web_md')
+    >>> fire = nlp('fire')
+    >>>
+    >>> ice = nlp('ice')
+    >>> ice_fire_axis = salto.axis(ice.vector, fire.vector)
+    >>>
+    >>> cold = ['ice cream', 'polar', 'snow', 'winter', 'fridge', 'Antarctica']
+    >>> warm = ['boiling water', 'tropical', 'sun', 'summer', 'oven', 'Africa']
+    >>>
+    >>> cold_vecs = [nlp(w).vector for w in cold]
+    >>> warm_vecs = [nlp(w).vector for w in warm]
+    >>>
+    >>> cold_values = [ice_fire_axis(p) for p in cold_vecs]
+    >>> warm_values = [ice_fire_axis(p) for p in warm_vecs]
+    >>>
+    >>> axis.plot(
+    >>>     {values: cold_values, labels: cold, color: 'blue'},
+    >>>     {values: warm_values, labels: warm, color: 'red'},
+    >>>      show_poles = True
+    >>> )
     '''
     def __init__(self, negative_pole: npt.NDArray, positive_pole: npt.NDArray):
         
@@ -91,6 +90,13 @@ class axis:
         '''
         
         Plot the groups of vectors on the on the axis (in the one-dimensional space)
+    
+        Parameters
+        ----------
+        title: str
+            Plot title
+        figsize: Tuple
+            Figure size
         
         Examples
         --------
