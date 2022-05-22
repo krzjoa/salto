@@ -50,9 +50,9 @@ cold_values = [ice_fire_axis(p) for p in cold_vecs]
 warm_values = [ice_fire_axis(p) for p in warm_vecs]
 
 ice_fire_axis.plot(
-    {values: cold_values, labels: cold, color: 'blue'},
-    {values: warm_values, labels: warm, color: 'red'},
-    poles = {negative: {label: 'ice', color = 'blue'}, 
-             positive: {label: 'fire', color = 'red'}}
-)
+        {'values': cold_values, 'labels': cold, 'color': 'tab:blue'},
+        {'values': warm_values, 'labels': warm, 'color': 'tab:red'},
+        poles = {'negative': {'label': 'ice', 'color': 'blue'}, 
+                 'positive': {'label': 'ice', 'color': 'red'}}
+    )  
 ```

@@ -52,10 +52,11 @@ class axis:
     >>> cold_values = [ice_fire_axis(p) for p in cold_vecs]
     >>> warm_values = [ice_fire_axis(p) for p in warm_vecs]
     >>>
-    >>> axis.plot(
-    >>>     {values: cold_values, labels: cold, color: 'blue'},
-    >>>     {values: warm_values, labels: warm, color: 'red'},
-    >>>      show_poles = True
+    >>> ice_fire_axis.plot(
+    >>>     {'values': cold_values, 'labels': cold, 'color': 'tab:blue'},
+    >>>     {'values': warm_values, 'labels': warm, 'color': 'tab:red'},
+    >>>     poles = {'negative': {'label': 'ice', 'color': 'blue'}, 
+    >>>              'positive': {'label': 'ice', 'color': 'red'}}
     >>> )
     '''
     def __init__(self, negative_pole: npt.NDArray, positive_pole: npt.NDArray):
@@ -100,23 +101,34 @@ class axis:
         
         Examples
         --------
-        ice_fire_axis = salto.axis(ice.vector, fire.vector)
-        
-        ice_fire_axis.plot(
-                {values: cold_values, labels: cold, color: 'tab:blue'},
-                {values: warm_values, labels: warm, color: 'tab:red'},
-                poles = {negative: {label: 'ice', color: 'blue'}, 
-                         positive: {label: 'ice', color: 'red'}}
-            )
+        >>> ice_fire_axis = salto.axis(ice.vector, fire.vector)
+        >>> 
+        >>> ice_fire_axis.plot(
+        >>>     {'values': cold_values, 'labels': cold, 'color': 'tab:blue'},
+        >>>     {'values': warm_values, 'labels': warm, 'color': 'tab:red'},
+        >>>     poles = {'negative': {'label': 'ice', 'color': 'blue'}, 
+        >>>              'positive': {'label': 'ice', 'color': 'red'}}
+        >>> )   
    
         ''' 
+         
         # Init plot
         fig, ax = plt.subplots(figsize=figsize, constrained_layout=True)
         ax.set(title=title)
         
+        # Horizontal line       
+        neg_value = self(self.negative_pole)
+        pos_value = self(self.positive_pole)
+        
+        all_values = reduce(add, [a['values'] for a in args])
+        all_values = all_values + [neg_value, pos_value]
+        
+        ax.plot(all_values, np.zeros_like(all_values), "-o",
+        color="k", markerfacecolor="w")  # Baseline and markers on it.
+        
         # Generate colours if not defined
         for group in args:
-            
+
             values = group['values']
             labels = group['labels']
             color  = group['color']
@@ -134,9 +146,6 @@ class axis:
         # Show poles
         neg_pole = poles['negative']
         pos_pole = poles['positive']
-        
-        neg_value = self(self.negative_pole)
-        pos_value = self(self.positive_pole)
 
         ax.vlines(neg_value, 0, 4, neg_pole['color'])  
         ax.annotate(neg_pole['label'], xy=(neg_value, 4), xytext=(4, np.sign(4)*3),
