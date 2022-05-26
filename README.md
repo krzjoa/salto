@@ -5,7 +5,14 @@
 
 ## Installation
 
-For the moment, you can install this library using
+You can install this library from *PyPI*
+
+```bash
+pip install salto
+```
+
+or from the GitHub repo:
+ 
 ```bash
 pip install git+https://github.com/krzjoa/salto.git
 ```
