@@ -20,7 +20,7 @@ newly created line as a new axis by projecting the rest of the points onto this 
 
  
 
-<img src = "examples/plot_3.png"></a>
+<img src = "https://raw.githubusercontent.com/krzjoa/salto/main/examples/plot_3.png"></a>
 <center> <i>Drawn using: <a>https://www.geogebra.org/m/JMMKv7cx<a></i>
  
 I named the package **salto**, which means *somersault* in many languages or simply *jump* in Romance languages like Italian, where this word originally comes from.
@@ -53,6 +53,7 @@ ice_fire_axis.plot(
         {'values': cold_values, 'labels': cold, 'color': 'tab:blue'},
         {'values': warm_values, 'labels': warm, 'color': 'tab:red'},
         poles = {'negative': {'label': 'ice', 'color': 'blue'}, 
-                 'positive': {'label': 'ice', 'color': 'red'}}
+                 'positive': {'label': 'fire', 'color': 'red'}}
     )  
 ```
+<img src = "https://raw.githubusercontent.com/krzjoa/salto/main/examples/word-embedding_45_0.png"></a>

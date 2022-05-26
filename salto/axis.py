@@ -1,6 +1,8 @@
 import numpy as np
 import numpy.typing as npt
 import matplotlib.pyplot as plt
+from functools import reduce
+from operator import add
 
 
 class axis:
