@@ -1,4 +1,4 @@
-# salto
+# salto <img src='img/salto-logo.png' align="right" height="139" />
 
 > Playing with embedding vectors
 
