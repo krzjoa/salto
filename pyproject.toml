@@ -1,3 +1,22 @@
+[project]
+name = "salto"
+version = "0.0.3"
+authors = [
+  { name="Krzysztof Joachimiak", email="joachimiak.krzysztof@gmail.com" },
+]
+description = "Playing with embedding vectors"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/krzjoa/salto"
+"Bug Tracker" = "https://github.com/krzjoa/salto/issues"
+
 [build-system]
 requires = ['setuptools>=42']
 build-backend = 'setuptools.build_meta'
