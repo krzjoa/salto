@@ -64,3 +64,6 @@ ice_fire_axis.plot(
     )  
 ```
 <img src = "https://raw.githubusercontent.com/krzjoa/salto/main/examples/word-embedding_45_0.png"></a>
+
+## See also
+[scikit-spatial](https://github.com/ajhynes7/scikit-spatial) - Spatial objects and computations based on NumPy arrays.
